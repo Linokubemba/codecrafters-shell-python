@@ -1,14 +1,16 @@
 import sys
 
+def get_input():
+    sys.stdout.write("$ ")
+    in_value = input()
+    return in_value + ": command not found\n"
+
 
 def main():
-    # Uncomment this block to pass the first stage
-    sys.stdout.write("$ ")
+    while True:
+        out_value = get_input()
+        sys.stdout.write(out_value)
 
-    # Wait for user input
-    in_value = input()
-    out_value = in_value + ": command not found"
-    sys.stdout.write(out_value)
 
 
 if __name__ == "__main__":

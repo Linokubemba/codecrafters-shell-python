@@ -7,7 +7,7 @@ def exit(status: int):
     sys.exit(status)
 
 def type(cmd: str):
-    suffix = ": command not found"
+    suffix = ": not found"
     if cmd in COMMANDS:
         suffix = " is a shell builtin"
     print(cmd + suffix)

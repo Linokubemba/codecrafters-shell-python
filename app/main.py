@@ -15,7 +15,7 @@ def main():
             case "echo":
                 print(args[0])
             case "type" | _:
-                if cmd == "type" and args[0] in ["echo", "exit"]:
+                if cmd == "type" and args[0] in ["type", "echo", "exit"]:
                     print(args[0], "is a shell builtin")
                 else:
                     print(cmd + ": command not found")

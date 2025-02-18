@@ -29,7 +29,6 @@ def main():
             print(cmd + ": command not found")
 
 
-
 if __name__ == "__main__":
     COMMANDS = {
         "echo": echo,

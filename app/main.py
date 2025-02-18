@@ -1,36 +1,30 @@
 import sys
 
-def echo(args: str):
-    print(args)
+COMMANDS = { "echo", "exit", "type" }
 
-def type(cmd: str):
-    suffix = ": not found"
-    if cmd in COMMANDS:
-        suffix = " is a shell builtin"
-    print(cmd + suffix)
-
-def parse_cmd(input: str) -> str | None:
-    cmd, *args = input.split(" ", 1)
-    return cmd, args
+def run(cmd, args):
+    match cmd:
+        case "echo":
+            print(args)
+        case "type":
+            if not (args in COMMANDS):
+                raise ValueError(args + ": not found")
+            print(args, "is a shell builtin")
+        case default:
+            raise ValueError(cmd + ": command not found")
 
 def main():
     while True:
         sys.stdout.write("$ ")
-        sys.stdout.flush()
-        cmd, args = parse_cmd(input())
-        if cmd == "exit 0": return 0
+        cmd, *args = input().split(" ", 1)
+        if cmd == "exit":
+            sys.exit(0)
 
         try:
-            run = COMMANDS[cmd]
-            run(args[0])
-        except Exception:
-            print(cmd + ": command not found")
+            run(cmd, args[0] if args else "")
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":
-    COMMANDS = {
-        "echo": echo,
-        "exit": exit,
-        "type": type
-    }
     main()

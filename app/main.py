@@ -3,9 +3,6 @@ import sys
 def echo(args: str):
     print(args)
 
-def exit(status: int):
-    sys.exit(status)
-
 def type(cmd: str):
     suffix = ": not found"
     if cmd in COMMANDS:
@@ -20,8 +17,9 @@ def main():
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
-        
         cmd, args = parse_cmd(input())
+        if cmd == "exit 0": return 0
+
         try:
             run = COMMANDS[cmd]
             run(args[0])

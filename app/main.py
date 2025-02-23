@@ -1,15 +1,16 @@
 import sys
-
-COMMANDS = { "echo", "exit", "type" }
+import subprocess
 
 def run(cmd, args):
     match cmd:
         case "echo":
             print(args)
         case "type":
-            if not (args in COMMANDS):
+            status, output = subprocess.getstatusoutput(f"type {args}")
+            if status == 0:
+                print(output)
+            else:
                 raise ValueError(args + ": not found")
-            print(args, "is a shell builtin")
         case default:
             raise ValueError(cmd + ": command not found")
 

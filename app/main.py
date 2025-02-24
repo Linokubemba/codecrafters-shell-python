@@ -24,18 +24,18 @@ class BuiltinHandler:
         target_dirs = args.split("/") if "/" in args else [args]
         for i, dir in enumerate(target_dirs):
             if dir == "" and i == 0:
-                path_dirs = []
+                path_dirs = [""]
             elif dir == "~":
                 path_dirs = [os.environ.get("HOME")]
             elif dir == "..":
                 path_dirs.pop()
-            else:
-                path_dirs.append(dir if dir != "." else "")
+            elif dir != ".":
+                path_dirs.append(dir)
         
         tmp = "/".join(path_dirs)
         if not os.path.exists(tmp):
             raise ValueError("cd: " + tmp + ": No such file or directory")
-        self.active_dir = tmp
+        self.active_dir = tmp.removesuffix("/")
 
     def type(self, args):
         if not (args in self.BUILTIN_CMDS):

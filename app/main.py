@@ -5,16 +5,25 @@ import subprocess
 
 class BuiltinHandler:
     def __init__(self):
-        self.BUILTIN_CMDS = {
-            "echo", "type", "exit", "pwd", "cd"
-        }
+        self.BUILTIN_CMDS = { "exit", "echo", "type", "pwd", "cd" }
         self.active_dir = os.getcwd()
+
+    def exit(self, args):
+        sys.exit(int(args))
     
     def echo(self, args):
         print(args)
     
-    def exit(self, args):
-        sys.exit(int(args))
+    def type(self, args):
+        if not (args in self.BUILTIN_CMDS):
+            for path in os.environ.get("PATH").split(os.pathsep):
+                cmd_path = os.path.join(path, args)
+                if os.path.exists(cmd_path):
+                    print(" ".join([args, "is", cmd_path]))
+                    return
+            
+            raise ValueError(args + ": not found")
+        print(args + " is a shell builtin")
 
     def pwd(self, _):
         print(self.active_dir)
@@ -36,17 +45,6 @@ class BuiltinHandler:
         if not os.path.exists(tmp):
             raise ValueError("cd: " + tmp + ": No such file or directory")
         self.active_dir = tmp.removesuffix("/")
-
-    def type(self, args):
-        if not (args in self.BUILTIN_CMDS):
-            for path in os.environ.get("PATH").split(os.pathsep):
-                cmd_path = os.path.join(path, args)
-                if os.path.exists(cmd_path):
-                    print(" ".join([args, "is", cmd_path]))
-                    return
-            
-            raise ValueError(args + ": not found")
-        print(args + " is a shell builtin")
 
 
 def main():

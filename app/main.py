@@ -25,10 +25,12 @@ class BuiltinHandler:
         for i, dir in enumerate(target_dirs):
             if dir == "" and i == 0:
                 path_dirs = []
+            elif dir == "~":
+                path_dirs = [os.environ.get("HOME")]
             elif dir == "..":
                 path_dirs.pop()
-                continue
-            path_dirs.append(dir if dir != "." else "")
+            else:
+                path_dirs.append(dir if dir != "." else "")
         
         tmp = "/".join(path_dirs)
         if not os.path.exists(tmp):
